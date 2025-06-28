@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>American Revolutionary War Timeline (1763-1783)</title>
+    <style>
+        /* Colonial-inspired design system */
+        :root {
+            --colonial-red: #8B1538;
+            --colonial-blue: #1e3a8a;
+            --colonial-cream: #fef7cd;
+            --colonial-brown: #92400e;
+            --parchment: #f7f3e9;
+            --ink: #1f2937;
+            --gold: #d97706;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: linear-gradient(135deg, var(--parchment) 0%, var(--colonial-cream) 100%);
+            color: var(--ink);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--colonial-red) 0%, var(--colonial-blue) 100%);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--colonial-brown);
+            padding: 1rem;
+            text-align: center;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: var(--gold);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:hover, .nav-btn:focus {
+            background: var(--colonial-red);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn.active {
+            background: var(--colonial-blue);
+            transform: translateY(-1px);
+        }
+
+        /* Main content container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Timeline container */
+        .timeline-container {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        /* Timeline central line */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--colonial-red), var(--colonial-blue));
+            border-radius: 2px;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        /* Timeline items */
+        .timeline-item {
+            position: relative;
+            margin: 2rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+            margin-right: calc(50% + 2rem);
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: calc(50% + 2rem);
+            margin-right: auto;
+        }
+
+        /* Timeline markers */
+        .timeline-marker {
+            position: absolute;
+            left: 50%;
+            top: 1rem;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--gold);
+            border: 4px solid white;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px var(--colonial-blue), 0 2px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-marker:hover {
+            transform: translateX(-50%) scale(1.2);
+            box-shadow: 0 0 0 6px var(--colonial-red), 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Timeline content cards */
+        .timeline-content {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--colonial-cream);
+            max-width: 500px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border-color: var(--gold);
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: 15px solid transparent;
+            top: 1rem;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content::before {
+            right: -30px;
+            border-left-color: white;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::before {
+            left: -30px;
+            border-right-color: white;
+        }
+
+        .event-date {
+            font-size: 0.9rem;
+            color: var(--colonial-red);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-title {
+            font-size: 1.2rem;
+            color: var(--colonial-blue);
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .event-summary {
+            font-size: 0.95rem;
+            color: var(--ink);
+            margin-bottom: 1rem;
+        }
+
+        .expand-btn {
+            background: var(--colonial-blue);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.3s ease;
+        }
+
+        .expand-btn:hover, .expand-btn:focus {
+            background: var(--colonial-red);
+        }
+
+        /* Detailed content panels */
+        .event-details {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--parchment);
+            border-radius: 8px;
+            border-left: 4px solid var(--gold);
+        }
+
+        .event-details.expanded {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .detail-section {
+            margin-bottom: 1rem;
+        }
+
+        .detail-section h4 {
+            color: var(--colonial-red);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .key-figures {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .figure-tag {
+            background: var(--colonial-blue);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        /* People section */
+        .people-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .person-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--colonial-cream);
+            transition: all 0.3s ease;
+        }
+
+        .person-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border-color: var(--gold);
+        }
+
+        .person-header {
+            background: linear-gradient(135deg, var(--colonial-blue), var(--colonial-red));
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .person-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .person-dates {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .person-content {
+            padding: 1.5rem;
+        }
+
+        .person-role {
+            color: var(--colonial-red);
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .person-quote {
+            background: var(--parchment);
+            padding: 1rem;
+            border-left: 4px solid var(--gold);
+            font-style: italic;
+            margin: 1rem 0;
+        }
+
+        .quote-attribution {
+            font-size: 0.8rem;
+            color: var(--colonial-brown);
+            text-align: right;
+            margin-top: 0.5rem;
+        }
+
+        /* Themes section */
+        .themes-container {
+            display: none;
+        }
+
+        .themes-container.active {
+            display: block;
+        }
+
+        .theme-section {
+            background: white;
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-left: 6px solid var(--colonial-red);
+        }
+
+        .theme-title {
+            color: var(--colonial-blue);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--colonial-cream);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 2rem;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content {
+                margin-left: 4rem;
+                margin-right: 1rem;
+                text-align: left;
+            }
+
+            .timeline-marker {
+                left: 2rem;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-content::before,
+            .timeline-item:nth-child(even) .timeline-content::before {
+                left: -30px;
+                right: auto;
+                border-right-color: white;
+                border-left-color: transparent;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        /* Accessibility enhancements */
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus indicators */
+        .timeline-content:focus,
+        .nav-btn:focus,
+        .expand-btn:focus {
+            outline: 3px solid var(--gold);
+            outline-offset: 2px;
+        }
+
+        /* Print styles */
+        @media print {
+            .nav-buttons { display: none; }
+            .timeline-content { break-inside: avoid; }
+            body { background: white; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>The American Revolutionary War</h1>
+        <p class="subtitle">An Interactive Timeline of Independence (1763-1783)</p>
+    </header>
+
+    <nav role="navigation" aria-label="Main navigation">
+        <div class="nav-buttons">
+            <button class="nav-btn active" onclick="showSection('timeline')" aria-pressed="true">
+                <span class="visually-hidden">Show </span>Timeline
+            </button>
+            <button class="nav-btn" onclick="showSection('people')" aria-pressed="false">
+                <span class="visually-hidden">Show </span>Key Figures
+            </button>
+            <button class="nav-btn" onclick="showSection('themes')" aria-pressed="false">
+                <span class="visually-hidden">Show </span>Major Themes
+            </button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Timeline Section -->
+        <section id="timeline-section" class="timeline-container" aria-label="Revolutionary War Timeline">
+            <div class="timeline" role="list">
+                <!-- Timeline items will be inserted here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- People Section -->
+        <section id="people-section" class="people-grid" style="display: none;" aria-label="Key Historical Figures">
+            <!-- People cards will be inserted here by JavaScript -->
+        </section>
+
+        <!-- Themes Section -->
+        <section id="themes-section" class="themes-container" aria-label="Major Historical Themes">
+            <div class="theme-section">
+                <h2 class="theme-title">Taxation and Representation Debates</h2>
+                <p><strong>Evolution of Colonial Arguments:</strong> The taxation debate evolved from practical grievances to constitutional principles. James Otis's rallying cry "taxation without representation is tyranny!" became foundational,  but the deeper issue was constitutional authority. </p>
+                
+                <div class="person-quote">
+                    <p>"No parts of His Majesty's dominions can be taxed without their consent; that every part has a right to be represented in the supreme or some subordinate legislature..." </p>
+                    <div class="quote-attribution">— James Otis, 1764</div>
+                </div>
+
+                <p><strong>British Justifications:</strong> British officials defended taxation through "virtual representation" theory - that Parliament represented all British subjects regardless of direct electoral participation. </p>
+
+                <p><strong>Economic Reality:</strong> The actual tax burden was minimal - colonists paid only 1 shilling annually compared to 26 shillings for British residents.  This reveals the debate was fundamentally about political power, not economic hardship. </p>
+            </div>
+
+            <div class="theme-section">
+                <h2 class="theme-title">Evolution of Military Strategy</h2>
+                <p><strong>American Strategy Evolution:</strong></p>
+                <ul>
+                    <li><strong>Early Phase (1775-1776):</strong> Reliance on militia, conventional European tactics</li>
+                    <li><strong>Middle Phase (1777-1778):</strong> Development of Continental Army, strategic retreats, Fabian strategy</li>
+                    <li><strong>Later Phase (1779-1781):</strong> Combined conventional/guerrilla warfare, coordination with French allies</li>
+                </ul>
+
+                <div class="person-quote">
+                    <p>"We fight, get beat, rise, and fight again."</p>
+                    <div class="quote-attribution">— General Nathanael Greene</div>
+                </div>
+            </div>
+
+            <div class="theme-section">
+                <h2 class="theme-title">International Diplomacy and Alliances</h2>
+                <p><strong>Global Transformation:</strong> The American Revolution transformed from a colonial rebellion into the first successful war of independence in modern history, establishing precedents that influenced liberation movements worldwide. </p>
+
+                <p><strong>French Alliance:</strong> The Franco-American Alliance of 1778 was crucial, providing military support, naval power, and legitimacy. French involvement escalated the conflict into a global war against Britain. </p>
+
+                <p><strong>Spanish and Dutch Support:</strong> Spain provided aid through New Orleans and launched Gulf Coast campaigns.  The Netherlands became the second European power to recognize U.S. independence and provided crucial loans. </p>
+            </div>
+
+            <div class="theme-section">
+                <h2 class="theme-title">Economic Factors and Social Changes</h2>
+                <p><strong>Class-Based Impact:</strong> The Revolution affected different social classes differently:</p>
+                <ul>
+                    <li><strong>Elite merchants and planters:</strong> Some supported revolution to escape British restrictions; others remained loyal due to business connections</li>
+                    <li><strong>Middle classes:</strong> Artisans and small farmers often benefited from domestic production increases</li>
+                    <li><strong>Poor and working classes:</strong> Hit hardest by economic disruption but gained some opportunities through military service </li>
+                </ul>
+
+                <p><strong>Diverse Experiences:</strong> Women gained some political roles through boycotts and resistance activities.  African Americans faced a paradox - some gained freedom through military service, while others saw slavery systems reinforced.  Native Americans experienced catastrophic land loss and cultural disruption. </p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Timeline events data
+        const timelineEvents = [
+            {
+                date: "February 10, 1763",
+                title: "Treaty of Paris",
+                summary: "End of French and Indian War creates British financial crisis",
+                context: "Britain gained vast North American territory but inherited massive war debt of £140 million, creating need for colonial revenue.",
+                significance: "Created the financial crisis that drove British taxation policies and removed French threat that had made colonists dependent on British protection.",
+                keyFigures: ["King George III", "Lord Bute", "George Washington"],
+                consequences: "Set stage for taxation disputes and reduced colonial appreciation for British protection."
+            },
+            {
+                date: "October 7, 1763",
+                title: "Royal Proclamation of 1763",
+                summary: "British prohibit colonial settlement west of Appalachian Mountains",
+                context: "Pontiac's War demonstrated ongoing frontier volatility. Britain sought to prevent conflicts with Native Americans.",
+                significance: "First uniform imperial policy affecting all 13 colonies. Widely ignored by colonists, establishing pattern of defying British law.",
+                keyFigures: ["King George III", "Lord Halifax", "Pontiac", "George Washington"],
+                consequences: "Angered land speculators and settlers, particularly affecting Virginia planters like Washington."
+            },
+            {
+                date: "April 5, 1764",
+                title: "Sugar Act",
+                summary: "First law explicitly designed to raise colonial revenue",
+                context: "Chancellor George Grenville sought revenue to pay war debt and ongoing military costs in North America.",
+                significance: "Introduced concept of 'taxation without representation' and established precedent of using naval courts to bypass colonial juries.",
+                keyFigures: ["George Grenville", "James Otis"],
+                consequences: "Disrupted colonial economy and led Massachusetts to appoint Committee of Correspondence in June 1764."
+            },
+            {
+                date: "March 22, 1765",
+                title: "Stamp Act",
+                summary: "First direct tax on colonies requiring stamps on printed materials",
+                context: "Parliament passed without debate, expecting minimal resistance based on successful use in Britain.",
+                significance: "Established 'no taxation without representation' as rallying cry. First unified intercolonial resistance.",
+                keyFigures: ["George Grenville", "Patrick Henry", "Samuel Adams"],
+                consequences: "Violent resistance throughout colonies. Sons of Liberty formed. Stamp Act Congress met with delegates from 9 colonies."
+            },
+            {
+                date: "June-July 1767",
+                title: "Townshend Acts",
+                summary: "Duties on glass, lead, paint, paper, and tea imported to colonies",
+                context: "Named after Chancellor Charles Townshend. Attempt to raise revenue through 'external' taxes after Stamp Act failure.",
+                significance: "Led directly to Boston Massacre. Created permanent British military presence in Boston.",
+                keyFigures: ["Charles Townshend", "John Dickinson", "Samuel Adams"],
+                consequences: "Colonial boycotts resumed. British troops sent to Boston in October 1768 to enforce laws."
+            },
+            {
+                date: "March 5, 1770",
+                title: "Boston Massacre",
+                summary: "British soldiers fire on crowd, killing five including Crispus Attucks",
+                context: "4,000 British soldiers stationed in Boston (population 15,000). Rising tensions over customs enforcement.",
+                significance: "Became powerful propaganda tool. Paul Revere's engraving 'The Bloody Massacre' widely distributed.",
+                keyFigures: ["Captain Thomas Preston", "Crispus Attucks", "Samuel Adams", "Paul Revere", "John Adams"],
+                consequences: "Troops withdrawn from Boston. Annual Massacre Day observances kept grievances alive."
+            },
+            {
+                date: "June 9, 1772",
+                title: "Gaspee Affair",
+                summary: "Rhode Island colonists burn British revenue ship",
+                context: "HMS Gaspee enforced customs laws by searching vessels for smuggled goods in Narragansett Bay.",
+                significance: "Demonstrated colonial willingness to use violence against British authority.",
+                keyFigures: ["Lieutenant William Dudingston", "John Brown"],
+                consequences: "British threat to try colonists in England alarmed other colonies and inspired Virginia Committee of Correspondence."
+            },
+            {
+                date: "November 2, 1772",
+                title: "Committees of Correspondence",
+                summary: "Boston establishes communication network among colonies",
+                context: "Samuel Adams feared revolutionary momentum declining after relative quiet period 1770-1772.",
+                significance: "Created infrastructure for continental resistance. Enabled rapid communication about British actions.",
+                keyFigures: ["Samuel Adams", "James Otis", "Joseph Warren", "Thomas Jefferson", "Patrick Henry"],
+                consequences: "Network of over 7,000 members across 11 colonies by 1774. Coordinated response to Tea Act crisis."
+            },
+            {
+                date: "December 16, 1773",
+                title: "Boston Tea Party",
+                summary: "Colonists dump 342 chests of East India Company tea into Boston Harbor",
+                context: "Tea Act granted East India Company monopoly on colonial tea sales, undercutting colonial merchants while maintaining tea tax.",
+                significance: "Point of no return in colonial resistance. Demonstrated colonial willingness to destroy property to resist British policy.",
+                keyFigures: ["Samuel Adams", "Governor Thomas Hutchinson", "Sons of Liberty"],
+                consequences: "Port of Boston closed under Boston Port Act. British government determined to punish Massachusetts."
+            },
+            {
+                date: "March-June 1774",
+                title: "Intolerable Acts",
+                summary: "Punitive laws close Boston Port and revoke Massachusetts charter",
+                context: "Parliamentary response to Boston Tea Party. Designed to isolate and punish Massachusetts.",
+                significance: "Transformed Massachusetts crisis into continental crisis. Convinced moderates that British aimed at destroying colonial self-government.",
+                keyFigures: ["Lord North", "General Thomas Gage"],
+                consequences: "United other colonies in sympathy with Massachusetts. Direct cause of First Continental Congress."
+            },
+            {
+                date: "September 5-October 26, 1774",
+                title: "First Continental Congress",
+                summary: "56 delegates from 12 colonies coordinate resistance",
+                context: "Response to Intolerable Acts. Colonial assemblies elected delegates throughout summer 1774.",
+                significance: "First unified continental government. Demonstrated colonial ability to coordinate resistance.",
+                keyFigures: ["George Washington", "John Adams", "Patrick Henry", "Peyton Randolph"],
+                consequences: "Successfully organized continental boycott. British imports dropped 97% in 1775. Colonial militias began organizing."
+            },
+            {
+                date: "April 19, 1775",
+                title: "Lexington and Concord",
+                summary: "First battles of Revolutionary War begin armed conflict", 
+                context: "British attempt to seize colonial weapons at Concord and arrest Samuel Adams and John Hancock.", 
+                significance: "'Shot heard 'round the world' marked beginning of armed conflict. Demonstrated colonial ability to inflict casualties on British forces.", 
+                keyFigures: ["Captain John Parker", "Colonel James Barrett", "Lt. Col. Francis Smith", "Major John Pitcairn"],
+                consequences: "British retreat became running battle lasting 18 miles. Siege of Boston began." 
+            },
+            {
+                date: "June 17, 1775",
+                title: "Battle of Bunker Hill",
+                summary: "Costly British victory demonstrates American fighting ability", 
+                context: "British attempt to break siege of Boston by occupying Charlestown Heights.", 
+                significance: "Pyrrhic British victory demonstrating Americans could inflict devastating casualties on British regulars.", 
+                keyFigures: ["Colonel William Prescott", "General William Howe", "General John Burgoyne"],
+                consequences: "British: 1,054 casualties; American: 450 casualties. Famous for 'Don't fire until you see the whites of their eyes!'"
+            },
+            {
+                date: "July 3, 1775",
+                title: "Washington Takes Command",
+                summary: "George Washington becomes Commander-in-Chief of Continental Army", 
+                context: "Second Continental Congress needed unified command for forces besieging Boston.", 
+                significance: "Established civilian control of military and unified colonial forces under single command.",
+                keyFigures: ["George Washington", "John Adams"],
+                consequences: "Washington transformed colonial militia into disciplined Continental Army over course of war."
+            },
+            {
+                date: "July 4, 1776",
+                title: "Declaration of Independence",
+                summary: "Continental Congress adopts Declaration of Independence",
+                context: "Transformed colonial rebellion into war for independence. Made foreign alliances possible.",
+                significance: "First formal assertion of right to independence from colonial empire. Influenced liberation movements worldwide.",
+                keyFigures: ["Thomas Jefferson", "Benjamin Franklin", "John Adams"],
+                consequences: "Enabled secret French aid to escalate and set stage for formal military alliances."
+            },
+            {
+                date: "August 27, 1776",
+                title: "Battle of Long Island",
+                summary: "Massive British victory nearly destroys Continental Army",
+                context: "British attempt to capture New York City with 32,000 troops including 8,000 Hessians.",
+                significance: "Near-disaster for Americans but Washington's tactical retreats preserved the army.",
+                keyFigures: ["George Washington", "General William Howe", "General Henry Clinton"],
+                consequences: "Washington forced to retreat across New Jersey. Set stage for Trenton counterattack."
+            },
+            {
+                date: "December 26, 1776",
+                title: "Battle of Trenton",
+                summary: "Washington crosses Delaware for surprise victory",
+                context: "Washington's surprise attack to revive American morale after New York defeats.",
+                significance: "Restored American morale, led to re-enlistments, proved war was not over.",
+                keyFigures: ["George Washington", "Nathanael Greene", "Colonel Johann Rall"],
+                consequences: "Hessian: 100 killed/wounded, 900 captured; American: 2 killed, 5 wounded. Major morale boost."
+            },
+            {
+                date: "October 17, 1777",
+                title: "Saratoga Campaign",
+                summary: "Burgoyne surrenders 5,895 troops to American forces",
+                context: "British three-pronged strategy to isolate New England failed when other armies didn't coordinate.",
+                significance: "Turning point of the war. Convinced France to enter formal alliance with America.",
+                keyFigures: ["General John Burgoyne", "General Horatio Gates", "Benedict Arnold", "Daniel Morgan"],
+                consequences: "Led directly to Franco-American Alliance of February 6, 1778. Transformed colonial rebellion into global war."
+            },
+            {
+                date: "February 6, 1778",
+                title: "Franco-American Alliance",
+                summary: "France formally allies with United States",
+                context: "Following American victory at Saratoga, France decided to formalize support without waiting for Spain.",
+                significance: "First formal treaty signed by United States. Transformed conflict into global war against Britain.",
+                keyFigures: ["Benjamin Franklin", "Silas Deane", "Arthur Lee", "Conrad Alexandre Gérard"],
+                consequences: "Britain declared war on France March 17, 1778. Spanish and Dutch involvement followed."
+            },
+            {
+                date: "Winter 1777-1778",
+                title: "Valley Forge",
+                summary: "Continental Army endures harsh winter, emerges disciplined force",
+                context: "Washington's army wintered near Philadelphia while British occupied the city in comfort.",
+                significance: "Despite suffering, Continental Army emerged as disciplined force under Baron von Steuben's training.",
+                keyFigures: ["George Washington", "Baron von Steuben", "Marquis de Lafayette"],
+                consequences: "Army transformation enabled Americans to fight British regulars on equal terms at Monmouth."
+            },
+            {
+                date: "June 28, 1778",
+                title: "Battle of Monmouth",
+                summary: "Continental Army fights British to standstill",
+                context: "Washington's attack on British army evacuating Philadelphia for New York.",
+                significance: "Demonstrated Continental Army could fight British regulars on equal terms after Valley Forge training.",
+                keyFigures: ["George Washington", "Charles Lee", "General Henry Clinton"],
+                consequences: "Strategic draw proved American military competence. Last major battle in Northern theater."
+            },
+            {
+                date: "May 12, 1780",
+                title: "Siege of Charleston",
+                summary: "British capture Charleston and 5,400 Continental troops",
+                context: "British Southern Strategy to regain control through loyalist support.",
+                significance: "Largest American loss of the war. Devastating blow to American cause in the South.",
+                keyFigures: ["General Benjamin Lincoln", "General Henry Clinton", "General Charles Cornwallis"],
+                consequences: "Launched British Southern Strategy. Led to partisan warfare throughout South."
+            },
+            {
+                date: "August 16, 1780",
+                title: "Battle of Camden",
+                summary: "Worst American defeat; Gates routed by Cornwallis",
+                context: "Attempted American counter-offensive in South Carolina under Horatio Gates.",
+                significance: "Worst American defeat of the war. American militia fled immediately; Continentals overwhelmed.",
+                keyFigures: ["General Horatio Gates", "General Charles Cornwallis", "Lt. Col. Banastre Tarleton"],
+                consequences: "1,900 of 3,400 Americans lost. Led to Gates' replacement by Nathanael Greene."
+            },
+            {
+                date: "October 7, 1780",
+                title: "Battle of Kings Mountain",
+                summary: "Overmountain Men destroy Ferguson's force",
+                context: "American frontiersmen attack British force threatening Appalachian frontier.",
+                significance: "First major American victory in South after Charleston. Convinced many neutrals to join Patriots.",
+                keyFigures: ["Colonel William Campbell", "Colonel John Sevier", "Major Patrick Ferguson"],
+                consequences: "Ferguson's entire force killed or captured. Turned tide of war in South."
+            },
+            {
+                date: "January 17, 1781",
+                title: "Battle of Cowpens",
+                summary: "Daniel Morgan's tactical masterpiece destroys Tarleton's force",
+                context: "Nathanael Greene's strategy of dividing army to harass British forces.",
+                significance: "Tactical masterpiece using double envelopment. Severely weakened Cornwallis' army.",
+                keyFigures: ["Brigadier General Daniel Morgan", "Lt. Col. Banastre Tarleton"],
+                consequences: "British: 110 killed, 200 wounded, 500 captured; American: 12 killed, 60 wounded."
+            },
+            {
+                date: "March 15, 1781",
+                title: "Battle of Guilford Courthouse",
+                summary: "Pyrrhic British victory forces Cornwallis to abandon Carolinas",
+                context: "Greene's strategy to force costly British victories through defense-in-depth tactics.",
+                significance: "British won battlefield but lost one-quarter of army. Forced Cornwallis to abandon South.",
+                keyFigures: ["General Nathanael Greene", "General Charles Cornwallis"],
+                consequences: "British: 93 killed, 413 wounded; American: 79 killed, 185 wounded. Cornwallis retreated to Virginia."
+            },
+            {
+                date: "October 19, 1781",
+                title: "Siege of Yorktown",
+                summary: "Cornwallis surrenders, effectively ending major combat",
+                context: "Combined Franco-American operation trapped Cornwallis between land and sea forces.",
+                significance: "Decisive victory effectively ending major combat operations. Led to British peace negotiations.",
+                keyFigures: ["George Washington", "Comte de Rochambeau", "Admiral de Grasse", "Charles Cornwallis"],
+                consequences: "7,000 British surrendered. Lord North's government fell. Peace negotiations began."
+            },
+            {
+                date: "November 30, 1782",
+                title: "Preliminary Peace Articles",
+                summary: "American and British negotiators agree to preliminary peace terms",
+                context: "After Yorktown, new British government willing to negotiate independence directly with Americans.",
+                significance: "Britain recognized American independence and generous boundaries from Atlantic to Mississippi.",
+                keyFigures: ["Benjamin Franklin", "John Adams", "John Jay", "David Hartley"],
+                consequences: "Established framework for final treaty. Americans negotiated independently, bypassing France."
+            },
+            {
+                date: "September 3, 1783",
+                title: "Treaty of Paris",
+                summary: "Final peace treaty signed, formally ending Revolutionary War",
+                context: "Global peace settlement ending American Revolutionary War and broader European conflicts.",
+                significance: "Formally ended world's first successful colonial independence movement. Established U.S. as legitimate nation.",
+                keyFigures: ["John Adams", "Benjamin Franklin", "John Jay", "David Hartley"],
+                consequences: "Created foundation for American expansion and established diplomatic precedent for colonial independence movements."
+            }
+        ];
+
+        // Key figures data
+        const keyFigures = [
+            {
+                name: "George Washington",
+                dates: "1732-1799",
+                role: "Commander-in-Chief, Continental Army",
+                quote: "Remember officers and soldiers that you are free men, fighting for the blessings of liberty.",
+                attribution: "Address to Continental Army before Battle of Long Island, 1776",
+                background: "Virginia planter and French and Indian War veteran who became the indispensable leader of American independence.",
+                significance: "Led colonial forces through eight years of warfare, established precedent for civilian control of military, and became first U.S. President."
+            },
+            {
+                name: "Benjamin Franklin",
+                dates: "1706-1790",
+                role: "Diplomat and Founding Father",
+                quote: "There never was a good war or a bad peace.",
+                attribution: "Letter to Sir Joseph Banks, July 1783",
+                background: "Self-made printer, inventor, scientist who became America's most famous diplomat in Europe.",
+                significance: "Secured crucial French alliance and financing that proved decisive in American victory."
+            },
+            {
+                name: "Thomas Jefferson",
+                dates: "1743-1826",
+                role: "Primary Author of Declaration of Independence",
+                quote: "We hold these truths to be self-evident: that all men are created equal...",
+                attribution: "Declaration of Independence, July 4, 1776",
+                background: "Virginia lawyer and planter who articulated the philosophical foundations for American independence.",
+                significance: "His words in the Declaration became foundational to American ideals and influenced democratic movements worldwide."
+            },
+            {
+                name: "Marquis de Lafayette",
+                dates: "1757-1834",
+                role: "French Volunteer General",
+                quote: "The welfare of America is intimately connected with the happiness of all mankind.",
+                attribution: "Letter to Henry Laurens, 1778",
+                background: "Young French aristocrat who volunteered for American service at age 19, becoming like a son to Washington.",
+                significance: "Symbol of international support for American cause and crucial liaison securing French military aid."
+            },
+            {
+                name: "Nathanael Greene",
+                dates: "1742-1786",
+                role: "Southern Department Commander",
+                quote: "We fight, get beat, rise, and fight again.",
+                attribution: "Strategy during Southern Campaign, 1780-1781",
+                background: "Self-taught Rhode Island Quaker who became one of America's most innovative military strategists.",
+                significance: "Developed successful attrition strategy that reclaimed the South and forced British surrender at Yorktown."
+            },
+            {
+                name: "Charles Cornwallis",
+                dates: "1738-1805",
+                role: "British Southern Theater Commander",
+                quote: "I have the mortification to inform your Excellency that I have been forced to give up the posts of York and Gloucester.",
+                attribution: "Surrender letter to Henry Clinton, October 20, 1781",
+                background: "Professional British general who led the Southern Campaign but was ultimately defeated at Yorktown.",
+                significance: "His surrender effectively ended major British offensive operations and led to American independence."
+            },
+            {
+                name: "Abigail Adams",
+                dates: "1744-1818",
+                role: "Political Advisor and Women's Rights Advocate",
+                quote: "Remember the Ladies, and be more generous and favourable to them than your ancestors.",
+                attribution: "Letter to John Adams, March 31, 1776",
+                background: "Self-educated Massachusetts woman who managed family affairs while advising her husband on political matters.",
+                significance: "Her correspondence provides insight into women's perspectives and early advocacy for women's rights."
+            },
+            {
+                name: "Benedict Arnold",
+                dates: "1741-1801",
+                role: "Continental General turned British Agent",
+                quote: "Let me die in this old uniform in which I fought my battles. May God forgive me for ever having put on another.",
+                attribution: "Deathbed words, 1801",
+                background: "Early American hero at Ticonderoga and Saratoga who later attempted to surrender West Point to the British.",
+                significance: "His defection shocked both sides but strengthened resolve of remaining Patriots to continue the fight."
+            },
+            {
+                name: "Crispus Attucks",
+                dates: "c.1723-1770",
+                role: "First Casualty of Boston Massacre",
+                quote: "Don't be afraid of them!",
+                attribution: "Shouted to crowd before Boston Massacre, March 5, 1770",
+                background: "Man of African and Native American descent who worked as sailor and rope-maker in Boston.",
+                significance: "His death made him a symbol of resistance to British oppression and African American patriotism."
+            },
+            {
+                name: "Phillis Wheatley",
+                dates: "c.1753-1784",
+                role: "First Published African American Female Poet",
+                quote: "Celestial choir! enthron'd in realms of light, Columbia's scenes of glorious toils I write.",
+                attribution: "To His Excellency General Washington, 1775",
+                background: "Enslaved woman brought from Africa who became an accomplished poet supporting American independence.",
+                significance: "Her poetry linked Christian faith with American liberty while highlighting the contradiction of slavery."
+            },
+            {
+                name: "Joseph Brant (Thayendanegea)",
+                dates: "1743-1807",
+                role: "Mohawk War Chief and British Ally",
+                quote: "America stands armed with resolution and virtue, but she still recoils at the idea of drawing the sword against the nation from whence she derived her origin.",
+                attribution: "Recorded by Mercy Otis Warren, December 1774",
+                background: "Educated Mohawk leader who led four Iroquois nations in alliance with Britain during the war.",
+                significance: "Represented indigenous perspective and the complex loyalties that divided Native American communities."
+            },
+            {
+                name: "Mercy Otis Warren",
+                dates: "1728-1814",
+                role: "Political Writer and Historian",
+                quote: "America stands armed with resolution and virtue, but she still recoils at the idea of drawing the sword against the nation from whence she derived her origin.",
+                attribution: "December 1774",
+                background: "Massachusetts woman who wrote political plays and became the first woman to write a history of the Revolution.",
+                significance: "Used literature to advance the revolutionary cause and provided important historical documentation."
+            }
+        ];
+
+        // Application state
+        let currentSection = 'timeline';
+        let expandedEvent = null;
+
+        // Initialize the application
+        function init() {
+            renderTimeline();
+            renderPeople();
+            setupIntersectionObserver();
+            setupKeyboardNavigation();
+        }
+
+        // Section navigation
+        function showSection(section) {
+            // Update button states
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-pressed', 'false');
+            });
+            event.target.classList.add('active');
+            event.target.setAttribute('aria-pressed', 'true');
+
+            // Hide all sections
+            document.getElementById('timeline-section').style.display = 'none';
+            document.getElementById('people-section').style.display = 'none';
+            document.getElementById('themes-section').classList.remove('active');
+
+            // Show selected section
+            currentSection = section;
+            switch(section) {
+                case 'timeline':
+                    document.getElementById('timeline-section').style.display = 'block';
+                    break;
+                case 'people':
+                    document.getElementById('people-section').style.display = 'grid';
+                    break;
+                case 'themes':
+                    document.getElementById('themes-section').classList.add('active');
+                    break;
+            }
+        }
+
+        // Render timeline
+        function renderTimeline() {
+            const timeline = document.querySelector('.timeline');
+            timeline.innerHTML = '';
+
+            timelineEvents.forEach((event, index) => {
+                const timelineItem = document.createElement('div');
+                timelineItem.className = 'timeline-item';
+                timelineItem.setAttribute('role', 'listitem');
+                timelineItem.innerHTML = `
+                    <div class="timeline-marker" 
+                         role="button" 
+                         tabindex="0" 
+                         aria-label="Timeline marker for ${event.title}"
+                         onclick="toggleEvent(${index})"
+                         onkeydown="handleMarkerKeydown(event, ${index})"></div>
+                    <div class="timeline-content" 
+                         tabindex="0" 
+                         role="button"
+                         aria-expanded="false"
+                         aria-label="Event details for ${event.title}. Click to expand."
+                         onclick="toggleEvent(${index})"
+                         onkeydown="handleContentKeydown(event, ${index})">
+                        <div class="event-date">${event.date}</div>
+                        <h3 class="event-title">${event.title}</h3>
+                        <p class="event-summary">${event.summary}</p>
+                        <button class="expand-btn" aria-label="Show more details">Learn More</button>
+                        <div class="event-details" id="details-${index}">
+                            <div class="detail-section">
+                                <h4>Historical Context</h4>
+                                <p>${event.context}</p>
+                            </div>
+                            <div class="detail-section">
+                                <h4>Significance</h4>
+                                <p>${event.significance}</p>
+                            </div>
+                            <div class="detail-section">
+                                <h4>Key Figures</h4>
+                                <div class="key-figures">
+                                    ${event.keyFigures.map(figure => `<span class="figure-tag">${figure}</span>`).join('')}
+                                </div>
+                            </div>
+                            <div class="detail-section">
+                                <h4>Consequences</h4>
+                                <p>${event.consequences}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                timeline.appendChild(timelineItem);
+            });
+        }
+
+        // Render people section
+        function renderPeople() {
+            const peopleGrid = document.getElementById('people-section');
+            peopleGrid.innerHTML = '';
+
+            keyFigures.forEach(person => {
+                const personCard = document.createElement('div');
+                personCard.className = 'person-card';
+                personCard.innerHTML = `
+                    <div class="person-header">
+                        <h3 class="person-name">${person.name}</h3>
+                        <p class="person-dates">${person.dates}</p>
+                    </div>
+                    <div class="person-content">
+                        <p class="person-role">${person.role}</p>
+                        <p>${person.background}</p>
+                        <div class="person-quote">
+                            <p>"${person.quote}"</p>
+                            <p class="quote-attribution">— ${person.attribution}</p>
+                        </div>
+                        <p><strong>Significance:</strong> ${person.significance}</p>
+                    </div>
+                `;
+                peopleGrid.appendChild(personCard);
+            });
+        }
+
+        // Toggle event details
+        function toggleEvent(index) {
+            const details = document.getElementById(`details-${index}`);
+            const content = details.parentElement;
+            const expandBtn = content.querySelector('.expand-btn');
+            
+            if (expandedEvent === index) {
+                // Collapse current event
+                details.classList.remove('expanded');
+                content.setAttribute('aria-expanded', 'false');
+                expandBtn.textContent = 'Learn More';
+                expandedEvent = null;
+            } else {
+                // Collapse previously expanded event
+                if (expandedEvent !== null) {
+                    const prevDetails = document.getElementById(`details-${expandedEvent}`);
+                    const prevContent = prevDetails.parentElement;
+                    const prevBtn = prevContent.querySelector('.expand-btn');
+                    prevDetails.classList.remove('expanded');
+                    prevContent.setAttribute('aria-expanded', 'false');
+                    prevBtn.textContent = 'Learn More';
+                }
+                
+                // Expand new event
+                details.classList.add('expanded');
+                content.setAttribute('aria-expanded', 'true');
+                expandBtn.textContent = 'Show Less';
+                expandedEvent = index;
+            }
+        }
+
+        // Keyboard navigation for timeline markers
+        function handleMarkerKeydown(event, index) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                toggleEvent(index);
+            }
+        }
+
+        // Keyboard navigation for content areas
+        function handleContentKeydown(event, index) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                toggleEvent(index);
+            }
+        }
+
+        // Setup intersection observer for animations
+        function setupIntersectionObserver() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                observer.observe(item);
+            });
+        }
+
+        // Setup keyboard navigation
+        function setupKeyboardNavigation() {
+            document.addEventListener('keydown', (event) => {
+                // Skip if user is typing in an input
+                if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+                    return;
+                }
+
+                switch(event.key) {
+                    case '1':
+                        if (currentSection !== 'timeline') {
+                            document.querySelector('.nav-btn').click();
+                        }
+                        break;
+                    case '2':
+                        if (currentSection !== 'people') {
+                            document.querySelectorAll('.nav-btn')[1].click();
+                        }
+                        break;
+                    case '3':
+                        if (currentSection !== 'themes') {
+                            document.querySelectorAll('.nav-btn')[2].click();
+                        }
+                        break;
+                }
+            });
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Make functions available globally for onclick handlers
+        window.showSection = showSection;
+        window.toggleEvent = toggleEvent;
+        window.handleMarkerKeydown = handleMarkerKeydown;
+        window.handleContentKeydown = handleContentKeydown;
+    </script>
+</body>
+</html>
